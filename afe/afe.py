@@ -1,8 +1,44 @@
+import os
+import sys
+
+# Add the vendor folder to sys.path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+vendor_dir = os.path.join(current_dir, "vendor")
+sys.path.insert(0, vendor_dir)
+
+
 import xml.etree.ElementTree as ET
 import subprocess
 import requests
 from bs4 import BeautifulSoup
 import socket
+import shutil
+import subprocess
+import sys
+
+# ------------------------------------------------------
+# CHECK FOR NMAP
+# ------------------------------------------------------
+if shutil.which("nmap") is None:
+    print("[INFO] Nmap is not installed. Installing it now...")
+    try:
+        # Update package list and install nmap
+        subprocess.run(["sudo", "apt-get", "update"], check=True)
+        subprocess.run(["sudo", "apt-get", "install", "-y", "nmap"], check=True)
+        print("[INFO] Nmap installed successfully.")
+    except subprocess.CalledProcessError:
+        print("[ERROR] Failed to install Nmap. Please install it manually:")
+        print("  sudo apt update && sudo apt install nmap")
+        sys.exit(1)
+
+
+
+
+
+
+
+
+
 
 # ------------------------------------------------------
 # GET LOCAL IP + GENERATE SCAN RANGE
@@ -34,7 +70,7 @@ def get_local_subnet_range():
 def run_nmap_scan(target):
     command = f'nmap -oX - -p80 --open {target}'
     print("\n[INFO] Searching for AFE Firmware devices...\n")
-    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stde                                                                                                                                                             rr=subprocess.PIPE)
+    process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, error = process.communicate()
     return output.decode()
 
@@ -52,7 +88,7 @@ def parse_nmap_xml(xml_content):
 
         if address_elem is not None:
             ip = address_elem.attrib['addr']
-            hostname = hostname_elem.attrib.get('name', '') if hostname_elem is                                                                                                                                                              not None else ''
+            hostname = hostname_elem.attrib.get('name', '') if hostname_elem is not None else ''
             host_info.append((ip, hostname))
 
     return host_info
