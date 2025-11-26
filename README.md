@@ -26,21 +26,34 @@ This repository contains tools to scan and manage AFE Firmware devices on your l
 git clone https://github.com/JacekKac/AFE-firmware-tools.git
 cd AFE-firmware-tools
 
-## Run
 
-Run the AFE script:
+2. Run
 
-python3 -m afe.afe  - to autodect subnet to scan
+To run the AFE script:
 
-python3 -m afe.afe  --ip subnet_ip to override a default detecte subnet
+Automatically detect the subnet to scan:
+
+python3 -m afe.afe
+
+
+Override the automatically detected subnet:
+
+python3 -m afe.afe --ip <subnet_ip>
+
+
+Example:
 
 python3 -m afe.afe --ip 192.168.0.1
 
 
-you can also upgrade firmware from .bin file iside afe folder. 
+You can also upgrade the firmware using a .bin file located inside the afe folder.
+
+Firmware Notice
+
+There is no direct download link to the AFE firmware on Adrian’s website.
+To obtain it, inspect the network requests using your browser’s developer tools (F12), locate the firmware URL, and download it using wget:
+
+wget -O AFE-Firmware.zip "https://drive.usercontent.google.com/download?id=1uchrw-7uKOXyqqyRF4vv0EANoy5rGRuY&export=download&authuser=0"
 
 
-
-notice: there is no direct link to AFE firmware on Adrians website, you need to search for the address in developer options in your browser F12 and then use wget: 
-
-wget -O /AFE-Firmware.zip  "https://drive.usercontent.google.com/download?id=1uchrw-7uKOXyqqyRF4vv0EANoy5rGRuY&export=download&authuser=0" unpack the RIGHT .bin file into AFE/afe folder.
+After downloading, extract the correct .bin file into the AFE/afe directory.
